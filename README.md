@@ -1,4 +1,4 @@
-# madness_meter_2
+# Madness Meter 2.0
 
 A new Flutter project.
 
