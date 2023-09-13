@@ -26,6 +26,9 @@ class MyApp extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     return MaterialApp(
       theme: ThemeData(
+        sliderTheme: SliderThemeData(
+            trackHeight: 35,
+            thumbShape: RoundSliderThumbShape(enabledThumbRadius: 35)),
         textTheme: GoogleFonts.glassAntiquaTextTheme(textTheme).copyWith(),
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
