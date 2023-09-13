@@ -167,7 +167,7 @@ class MadnessMeter extends ConsumerWidget {
           clipper: TriangleClipper(),
           child: AnimatedContainer(
             duration: 50.ms,
-            width: 5 * ref.watch(madnessMeterValue).toDouble() * 1.2,
+            width: 6.5 * ref.watch(madnessMeterValue).toDouble() * 1.2,
             height: 8 * ref.watch(madnessMeterValue).toDouble(),
             decoration: BoxDecoration(
                 gradient: LinearGradient(
@@ -324,7 +324,7 @@ class SpellDescription extends StatelessWidget {
   }
 }
 
-class SpellButton extends StatelessWidget {
+class SpellButton extends ConsumerWidget {
   final bool isSpellMenu;
   final String title;
   final VoidCallback onPressed;
@@ -335,7 +335,7 @@ class SpellButton extends StatelessWidget {
       required this.onPressed});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: isSpellMenu ? 16.0 : 8),
       child: ElevatedButton(
@@ -352,7 +352,11 @@ class SpellButton extends StatelessWidget {
         ),
         style: ElevatedButton.styleFrom(
             fixedSize: isSpellMenu ? Size(200, 90) : Size(200, 75),
-            backgroundColor: Colors.white.withOpacity(.15),
+            backgroundColor: isSpellMenu
+                ? Colors.white.withOpacity(.15)
+                : percentageToHsl(ref.watch(madnessMeterValue).toDouble() / 100,
+                        250, 0, .35)
+                    .withOpacity(.1),
             shape: RoundedRectangleBorder(
                 side: BorderSide(color: Colors.white, width: 2),
                 borderRadius: BorderRadius.circular(10))),
