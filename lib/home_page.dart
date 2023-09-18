@@ -457,11 +457,13 @@ class CastButton extends ConsumerWidget {
       ),
       style: ElevatedButton.styleFrom(
           fixedSize: Size(180, 90),
-          backgroundColor: percentageToHsl(madnessAsPercent(ref), 250, 0, .35)
-              .withOpacity(.25),
+          backgroundColor: Color.fromRGBO(40, 40, 40, .7),
           shape: RoundedRectangleBorder(
-              side: BorderSide(color: Colors.white, width: 4),
-              borderRadius: BorderRadius.circular(10))),
+              side: BorderSide(
+                color: Colors.white,
+                width: 6,
+              ),
+              borderRadius: BorderRadius.circular(20))),
     );
   }
 }
