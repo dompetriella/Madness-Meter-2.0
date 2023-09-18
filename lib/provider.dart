@@ -9,3 +9,7 @@ final sessionIdProvider = StateProvider<int>((ref) {
 final madnessMeterValue = StateProvider<int>((ref) {
   return 0;
 });
+
+final maxMadnessValue = StateProvider<int>((ref) {
+  return 100;
+});

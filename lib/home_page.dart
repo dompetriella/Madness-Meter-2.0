@@ -57,7 +57,7 @@ class ImageBackground extends ConsumerWidget {
       child: FittedBox(
         fit: BoxFit.fill,
         child: Opacity(
-            opacity: .99 * (1 + ref.watch(madnessMeterValue)) / (100),
+            opacity: .99 * madnessAsPercent(ref),
             child: Image.asset('assets/starry_bg.png')),
       ),
     );
@@ -85,8 +85,7 @@ class BackgroundTint extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Container(
-        color: percentageToHsl(
-                ref.watch(madnessMeterValue).toDouble() / 100, 250, 0, .35)
+        color: percentageToHsl(madnessAsPercent(ref), 250, 0, .35)
             .withOpacity(.20 * (ref.watch(madnessMeterValue) / 100)));
   }
 }
@@ -102,7 +101,8 @@ class MeterText extends ConsumerWidget {
       padding: EdgeInsets.only(top: topPadding),
       child: Align(
         alignment: Alignment.topCenter,
-        child: Text('${ref.watch(madnessMeterValue).toStringAsFixed(0)} / 100',
+        child: Text(
+            '${ref.watch(madnessMeterValue).toStringAsFixed(0)} / ${ref.watch(maxMadnessValue)}',
             style: GoogleFonts.astloch(fontSize: 100, color: Colors.white)),
       ),
     );
@@ -171,18 +171,11 @@ class MadnessMeter extends ConsumerWidget {
             height: 8 * ref.watch(madnessMeterValue).toDouble(),
             decoration: BoxDecoration(
                 gradient: LinearGradient(
-                    stops: [
-                      0.01 + (0.7 * (ref.watch(madnessMeterValue) / 100)),
-                      1
-                    ],
+                    stops: [0.01 + (0.7 * madnessAsPercent(ref)), 1],
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                     colors: [
-                      percentageToHsl(
-                              ref.watch(madnessMeterValue).toDouble() / 100,
-                              250,
-                              0,
-                              .35)
+                      percentageToHsl(madnessAsPercent(ref), 250, 0, .35)
                           .withOpacity(.70),
                       Colors.transparent
                     ])),
@@ -219,13 +212,16 @@ class TestSlider extends ConsumerWidget {
   }
 }
 
-class MadSkullWidget extends StatelessWidget {
+class MadSkullWidget extends ConsumerWidget {
   const MadSkullWidget({
     super.key,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    double height = 150;
+    double width = 150;
+
     return Positioned(
       bottom: 0,
       left: 0,
@@ -233,13 +229,72 @@ class MadSkullWidget extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.only(bottom: 24.0),
         child: Center(
-          child: SizedBox(
-            height: 150,
-            width: 150,
-            child: Image.asset('assets/mad_skull.png'),
+          child: Stack(
+            children: [
+              SizedBox(
+                height: height,
+                width: width,
+                child: Stack(
+                  children: [
+                    EyeGlow(
+                      height: height,
+                      width: width,
+                      left: 0,
+                      right: width * .35,
+                    ),
+                    EyeGlow(
+                      height: height,
+                      width: width,
+                      left: width * .35,
+                      right: 0,
+                    ),
+                    Center(child: Image.asset('assets/mad_skull.png')),
+                  ],
+                ),
+              ),
+            ],
           ),
         ),
       ),
+    );
+  }
+}
+
+class EyeGlow extends HookConsumerWidget {
+  final double height;
+  final double width;
+  final double right;
+  final double left;
+  const EyeGlow(
+      {super.key,
+      required this.height,
+      required this.width,
+      required this.left,
+      required this.right});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    var animationController = useAnimationController();
+
+    Color color =
+        percentageToHsl(madnessAsPercent(ref), 250, 0, .35).withOpacity(.70);
+
+    return Positioned(
+      bottom: 48,
+      left: left,
+      right: right,
+      child: Opacity(
+          opacity: madnessAsPercent(ref),
+          child: AnimatedContainer(
+              duration: 400.ms,
+              decoration: BoxDecoration(
+                  color: color,
+                  boxShadow: [
+                    BoxShadow(color: color, spreadRadius: 3, blurRadius: 3)
+                  ],
+                  shape: BoxShape.circle),
+              height: height * .12 * madnessAsPercent(ref),
+              width: width * .12 * madnessAsPercent(ref))),
     );
   }
 }
@@ -271,9 +326,15 @@ class SpellsDrawer extends StatelessWidget {
                     height: 180,
                     child: Align(
                       alignment: Alignment.bottomLeft,
-                      child: Text(
-                        'Madness Spell List',
-                        style: TextStyle(color: Colors.white, fontSize: 32),
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: 8.0),
+                        child: Text(
+                          'Madness Spell List',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 32,
+                              letterSpacing: 3),
+                        ),
                       ),
                     ),
                   ),
@@ -319,7 +380,88 @@ class SpellDescription extends StatelessWidget {
             border: Border.all(color: Colors.white, width: 1.5),
             gradient: LinearGradient(
                 colors: [Color.fromRGBO(40, 40, 40, 1), Colors.transparent])),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Flexible(
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(0, 0, 24, 10),
+                            child: Text(
+                              'Trade Sanity - Machination (d8)',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                  letterSpacing: 3),
+                            ),
+                          ),
+                          Container(
+                            height: 1,
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(5)),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8.0),
+                            child: Text(
+                              'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco',
+                              style: TextStyle(
+                                  color: Colors.white.withOpacity(.8),
+                                  fontSize: 14,
+                                  letterSpacing: 2),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ]),
+              ),
+              Padding(
+                  padding: const EdgeInsets.only(left: 32.0),
+                  child: CastButton(
+                    onPressed: () {
+                      print('hello');
+                    },
+                  ))
+            ],
+          ),
+        ),
       ),
+    );
+  }
+}
+
+class CastButton extends ConsumerWidget {
+  final VoidCallback onPressed;
+  const CastButton({super.key, required this.onPressed});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return ElevatedButton(
+      onPressed: onPressed,
+      child: Center(
+        child: Text(
+          'Cast Spell',
+          style: TextStyle(
+              letterSpacing: 3,
+              fontSize: 18,
+              color: Colors.white,
+              fontWeight: FontWeight.w200),
+        ),
+      ),
+      style: ElevatedButton.styleFrom(
+          fixedSize: Size(180, 90),
+          backgroundColor: percentageToHsl(madnessAsPercent(ref), 250, 0, .35)
+              .withOpacity(.25),
+          shape: RoundedRectangleBorder(
+              side: BorderSide(color: Colors.white, width: 4),
+              borderRadius: BorderRadius.circular(10))),
     );
   }
 }
@@ -449,4 +591,12 @@ Color percentageToHsl(double percent, int hue0, int hue1, double lightness) {
   }
   double returnHue = ((percentFilled * (hue1 - hue0)) + hue0);
   return HSLColor.fromAHSL(1, returnHue, 1, lightness).toColor();
+}
+
+double madnessAsPercent(WidgetRef ref) {
+  double percent = ref.watch(madnessMeterValue) / ref.watch(maxMadnessValue);
+  if (percent > 1) {
+    percent = 1;
+  }
+  return percent;
 }
