@@ -6,8 +6,12 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:madness_meter_2/content/spells.dart';
 import 'package:madness_meter_2/main.dart';
 import 'package:madness_meter_2/provider.dart';
+
+import 'models/Spell.dart';
+import 'models/madness_type.dart';
 
 double sideBarSize = 300;
 double topPadding = 16;
@@ -109,13 +113,15 @@ class MeterText extends ConsumerWidget {
   }
 }
 
-class SpellBar extends StatelessWidget {
+class SpellBar extends ConsumerWidget {
   const SpellBar({
     super.key,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    List<Spell> castedSpells = ref.watch(castedSpellsListProvider);
+
     return SizedBox(
       width: sideBarSize,
       child: Column(
@@ -143,9 +149,24 @@ class SpellBar extends StatelessWidget {
               ),
             ),
           ),
-          SpellButton(title: 'Trade Sanity', onPressed: () => print('hello')),
-          SpellButton(title: 'Trade Sanity', onPressed: () => print('hello')),
-          SpellButton(title: 'Trade Sanity', onPressed: () => print('hello')),
+          Column(
+            children: [
+              if (castedSpells.isNotEmpty)
+                SpellButton(
+                    title: castedSpells.last.spellName,
+                    onPressed: () => castMadnessSpell(ref, castedSpells.last)),
+              if (castedSpells.length > 1)
+                SpellButton(
+                    title: castedSpells[castedSpells.length - 2].spellName,
+                    onPressed: () => castMadnessSpell(
+                        ref, castedSpells[castedSpells.length - 2])),
+              if (castedSpells.length > 2)
+                SpellButton(
+                    title: castedSpells[castedSpells.length - 2].spellName,
+                    onPressed: () => castMadnessSpell(
+                        ref, castedSpells[castedSpells.length - 3]))
+            ],
+          ),
         ],
       ),
     );
@@ -274,8 +295,6 @@ class EyeGlow extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    var animationController = useAnimationController();
-
     Color color =
         percentageToHsl(madnessAsPercent(ref), 250, 0, .35).withOpacity(.70);
 
@@ -341,12 +360,8 @@ class SpellsDrawer extends StatelessWidget {
                   Flexible(
                     child: ListView(
                       children: [
-                        SpellDescription(),
-                        SpellDescription(),
-                        SpellDescription(),
-                        SpellDescription(),
-                        SpellDescription(),
-                        SpellDescription(),
+                        for (var i = 0; i < fakeSpellsList.length; i++)
+                          SpellDescription(spell: fakeSpellsList[i])
                       ],
                     ),
                   ),
@@ -365,9 +380,8 @@ class SpellsDrawer extends StatelessWidget {
 }
 
 class SpellDescription extends StatelessWidget {
-  const SpellDescription({
-    super.key,
-  });
+  final Spell spell;
+  const SpellDescription({super.key, required this.spell});
 
   @override
   Widget build(BuildContext context) {
@@ -395,7 +409,7 @@ class SpellDescription extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 0, 24, 10),
                             child: Text(
-                              'Trade Sanity - Machination (d8)',
+                              '${spell.spellName} - ${MadnessType.values[spell.spellType].name} (d${MadnessType.values[spell.spellType].rollValue})',
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 18,
@@ -411,7 +425,7 @@ class SpellDescription extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 8.0),
                             child: Text(
-                              'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco',
+                              spell.description,
                               style: TextStyle(
                                   color: Colors.white.withOpacity(.8),
                                   fontSize: 14,
@@ -424,11 +438,7 @@ class SpellDescription extends StatelessWidget {
               ),
               Padding(
                   padding: const EdgeInsets.only(left: 32.0),
-                  child: CastButton(
-                    onPressed: () {
-                      print('hello');
-                    },
-                  ))
+                  child: CastButton(spell: spell))
             ],
           ),
         ),
@@ -437,14 +447,27 @@ class SpellDescription extends StatelessWidget {
   }
 }
 
+castMadnessSpell(WidgetRef ref, Spell spell) {
+  var currentMeter = ref.watch(madnessMeterValue);
+  var rng = Random();
+  var increaseAmount =
+      rng.nextInt(MadnessType.values[spell.spellType].rollValue) + 1;
+  ref.read(madnessMeterValue.notifier).state = currentMeter + increaseAmount;
+
+  ref.read(castedSpellsListProvider.notifier).state = [
+    ...ref.read(castedSpellsListProvider),
+    spell
+  ];
+}
+
 class CastButton extends ConsumerWidget {
-  final VoidCallback onPressed;
-  const CastButton({super.key, required this.onPressed});
+  final Spell spell;
+  const CastButton({super.key, required this.spell});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ElevatedButton(
-      onPressed: onPressed,
+      onPressed: () => castMadnessSpell(ref, spell),
       child: Center(
         child: Text(
           'Cast Spell',
