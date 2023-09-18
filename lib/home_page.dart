@@ -162,7 +162,7 @@ class SpellBar extends ConsumerWidget {
                         ref, castedSpells[castedSpells.length - 2])),
               if (castedSpells.length > 2)
                 SpellButton(
-                    title: castedSpells[castedSpells.length - 2].spellName,
+                    title: castedSpells[castedSpells.length - 3].spellName,
                     onPressed: () => castMadnessSpell(
                         ref, castedSpells[castedSpells.length - 3]))
             ],
@@ -187,7 +187,7 @@ class MadnessMeter extends ConsumerWidget {
         child: ClipPath(
           clipper: TriangleClipper(),
           child: AnimatedContainer(
-            duration: 50.ms,
+            duration: 200.ms,
             width: 6.5 * ref.watch(madnessMeterValue).toDouble() * 1.2,
             height: 8 * ref.watch(madnessMeterValue).toDouble(),
             decoration: BoxDecoration(
