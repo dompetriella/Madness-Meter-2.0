@@ -37,6 +37,7 @@ class MyApp extends HookConsumerWidget {
     }, []);
 
     final textTheme = Theme.of(context).textTheme;
+
     return MaterialApp(
       theme: ThemeData(
         sliderTheme: SliderThemeData(

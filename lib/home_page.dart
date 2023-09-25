@@ -20,32 +20,7 @@ class HomePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ref.watch(sessionIdProvider) > 0
-        ? Scaffold(
-            drawer: const SpellsDrawer(),
-            body: SafeArea(
-                child: Stack(
-              children: [
-                Background(),
-                ImageBackground(),
-                BackgroundTint(),
-                Padding(
-                  padding: EdgeInsets.only(top: topPadding),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      SpellBar(),
-                    ],
-                  ),
-                ),
-                MeterText(),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 120.0),
-                  child: MadnessMeter(),
-                ),
-                MadSkullWidget(),
-                TestSlider()
-              ],
-            )))
+        ? MadnessPage()
         : Scaffold(
             body: Stack(
               children: [
@@ -61,6 +36,42 @@ class HomePage extends ConsumerWidget {
               ],
             ),
           );
+  }
+}
+
+class MadnessPage extends ConsumerWidget {
+  const MadnessPage({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Scaffold(
+        drawer: const SpellsDrawer(),
+        body: SafeArea(
+            child: Stack(
+          children: [
+            Background(),
+            ImageBackground(),
+            BackgroundTint(),
+            Padding(
+              padding: EdgeInsets.only(top: topPadding),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  SpellBar(),
+                ],
+              ),
+            ),
+            MeterText(),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 120.0),
+              child: MadnessMeter(),
+            ),
+            MadSkullWidget(),
+            TestSlider()
+          ],
+        )));
   }
 }
 

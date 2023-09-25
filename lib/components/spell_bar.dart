@@ -15,6 +15,8 @@ class SpellBar extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     List<Spell> castedSpells = ref.watch(castedSpellsListProvider);
 
+    final liveNumber = ref.watch(madnessStreamProvider);
+
     return SizedBox(
       width: sideBarSize,
       child: Column(
@@ -57,7 +59,18 @@ class SpellBar extends ConsumerWidget {
                 SpellButton(
                     title: castedSpells[castedSpells.length - 3].spellName,
                     onPressed: () => castMadnessSpell(
-                        ref, castedSpells[castedSpells.length - 3]))
+                        ref, castedSpells[castedSpells.length - 3])),
+              Builder(builder: (context) {
+                return liveNumber.when(
+                    data: (value) {
+                      return Text(value.toString());
+                    },
+                    error: (error, stackTrace) => ScaffoldMessenger(
+                        child: SnackBar(
+                            content: Text(
+                                'Having Trouble Connecting to the Eldritch Horrors (database)'))),
+                    loading: () => SizedBox());
+              })
             ],
           ),
         ],
