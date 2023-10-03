@@ -5,8 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:madness_meter_2/db_functions.dart';
 import 'package:madness_meter_2/models/madness_type.dart';
-
-import 'models/Spell.dart';
+import 'models/spell.dart';
 import 'provider.dart';
 
 castMadnessSpell(WidgetRef ref, Spell spell) {
@@ -14,7 +13,7 @@ castMadnessSpell(WidgetRef ref, Spell spell) {
   var rng = Random();
   var increaseAmount =
       rng.nextInt(MadnessType.values[spell.spellType].rollValue) + 1;
-  ref.read(madnessMeterValue.notifier).state = currentMeter + increaseAmount;
+  updateSessionMadnessValue(ref.read(sessionIdProvider), increaseAmount);
 
   if (!ref.read(castedSpellsListProvider).contains(spell)) {
     ref.read(castedSpellsListProvider.notifier).state = [
@@ -22,8 +21,6 @@ castMadnessSpell(WidgetRef ref, Spell spell) {
       spell
     ];
   }
-
-  updateMadnessValueInDb(increaseAmount, ref, 'vessel');
 }
 
 class UpperCaseTextFormatter extends TextInputFormatter {

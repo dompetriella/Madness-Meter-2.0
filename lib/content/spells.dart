@@ -1,4 +1,4 @@
-import 'package:madness_meter_2/models/Spell.dart';
+import '../models/spell.dart';
 
 List<Spell> fakeSpellsList = [
   const Spell(

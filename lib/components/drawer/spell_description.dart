@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:madness_meter_2/utility.dart';
-
-import '../../models/Spell.dart';
 import '../../models/madness_type.dart';
+import '../../models/spell.dart';
 
 class SpellDescription extends StatelessWidget {
   final Spell spell;

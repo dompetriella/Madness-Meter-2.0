@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'Spell.dart';
+part of 'spell.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -72,18 +72,21 @@ class _$SpellCopyWithImpl<$Res, $Val extends Spell>
 }
 
 /// @nodoc
-abstract class _$$_SpellCopyWith<$Res> implements $SpellCopyWith<$Res> {
-  factory _$$_SpellCopyWith(_$_Spell value, $Res Function(_$_Spell) then) =
-      __$$_SpellCopyWithImpl<$Res>;
+abstract class _$$SpellImplCopyWith<$Res> implements $SpellCopyWith<$Res> {
+  factory _$$SpellImplCopyWith(
+          _$SpellImpl value, $Res Function(_$SpellImpl) then) =
+      __$$SpellImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({String spellName, String description, int spellType});
 }
 
 /// @nodoc
-class __$$_SpellCopyWithImpl<$Res> extends _$SpellCopyWithImpl<$Res, _$_Spell>
-    implements _$$_SpellCopyWith<$Res> {
-  __$$_SpellCopyWithImpl(_$_Spell _value, $Res Function(_$_Spell) _then)
+class __$$SpellImplCopyWithImpl<$Res>
+    extends _$SpellCopyWithImpl<$Res, _$SpellImpl>
+    implements _$$SpellImplCopyWith<$Res> {
+  __$$SpellImplCopyWithImpl(
+      _$SpellImpl _value, $Res Function(_$SpellImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -93,7 +96,7 @@ class __$$_SpellCopyWithImpl<$Res> extends _$SpellCopyWithImpl<$Res, _$_Spell>
     Object? description = null,
     Object? spellType = null,
   }) {
-    return _then(_$_Spell(
+    return _then(_$SpellImpl(
       spellName: null == spellName
           ? _value.spellName
           : spellName // ignore: cast_nullable_to_non_nullable
@@ -112,14 +115,14 @@ class __$$_SpellCopyWithImpl<$Res> extends _$SpellCopyWithImpl<$Res, _$_Spell>
 
 /// @nodoc
 @JsonSerializable()
-class _$_Spell implements _Spell {
-  const _$_Spell(
+class _$SpellImpl with DiagnosticableTreeMixin implements _Spell {
+  const _$SpellImpl(
       {required this.spellName,
       required this.description,
       required this.spellType});
 
-  factory _$_Spell.fromJson(Map<String, dynamic> json) =>
-      _$$_SpellFromJson(json);
+  factory _$SpellImpl.fromJson(Map<String, dynamic> json) =>
+      _$$SpellImplFromJson(json);
 
   @override
   final String spellName;
@@ -129,15 +132,25 @@ class _$_Spell implements _Spell {
   final int spellType;
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'Spell(spellName: $spellName, description: $description, spellType: $spellType)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'Spell'))
+      ..add(DiagnosticsProperty('spellName', spellName))
+      ..add(DiagnosticsProperty('description', description))
+      ..add(DiagnosticsProperty('spellType', spellType));
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_Spell &&
+            other is _$SpellImpl &&
             (identical(other.spellName, spellName) ||
                 other.spellName == spellName) &&
             (identical(other.description, description) ||
@@ -154,12 +167,12 @@ class _$_Spell implements _Spell {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_SpellCopyWith<_$_Spell> get copyWith =>
-      __$$_SpellCopyWithImpl<_$_Spell>(this, _$identity);
+  _$$SpellImplCopyWith<_$SpellImpl> get copyWith =>
+      __$$SpellImplCopyWithImpl<_$SpellImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_SpellToJson(
+    return _$$SpellImplToJson(
       this,
     );
   }
@@ -169,9 +182,9 @@ abstract class _Spell implements Spell {
   const factory _Spell(
       {required final String spellName,
       required final String description,
-      required final int spellType}) = _$_Spell;
+      required final int spellType}) = _$SpellImpl;
 
-  factory _Spell.fromJson(Map<String, dynamic> json) = _$_Spell.fromJson;
+  factory _Spell.fromJson(Map<String, dynamic> json) = _$SpellImpl.fromJson;
 
   @override
   String get spellName;
@@ -181,6 +194,6 @@ abstract class _Spell implements Spell {
   int get spellType;
   @override
   @JsonKey(ignore: true)
-  _$$_SpellCopyWith<_$_Spell> get copyWith =>
+  _$$SpellImplCopyWith<_$SpellImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

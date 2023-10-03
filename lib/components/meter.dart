@@ -20,9 +20,11 @@ class MeterText extends ConsumerWidget {
       padding: EdgeInsets.only(top: topPadding),
       child: Align(
         alignment: Alignment.topCenter,
-        child: Text(
-            '${ref.watch(madnessMeterValue).toStringAsFixed(0)} / ${ref.watch(maxMadnessValue)}',
-            style: GoogleFonts.astloch(fontSize: 100, color: Colors.white)),
+        child: (ref.watch(madnessMeterValue) > 0)
+            ? Text(
+                '${ref.watch(madnessMeterValue).toStringAsFixed(0)} / ${ref.watch(maxMadnessValue)}',
+                style: GoogleFonts.astloch(fontSize: 100, color: Colors.white))
+            : SizedBox.shrink(),
       ),
     );
   }
