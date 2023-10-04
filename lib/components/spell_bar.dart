@@ -59,6 +59,11 @@ class SpellBar extends ConsumerWidget {
                     title: castedSpells[castedSpells.length - 3].spellName,
                     onPressed: () => castMadnessSpell(
                         ref, castedSpells[castedSpells.length - 3])),
+              if (castedSpells.length > 3)
+                SpellButton(
+                    title: castedSpells[castedSpells.length - 4].spellName,
+                    onPressed: () => castMadnessSpell(
+                        ref, castedSpells[castedSpells.length - 4])),
             ],
           ),
         ],
