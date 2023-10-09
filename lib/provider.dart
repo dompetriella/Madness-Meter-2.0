@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'models/spell.dart';
@@ -17,4 +18,12 @@ final maxMadnessValue = StateProvider<int>((ref) {
 
 final castedSpellsListProvider = StateProvider<List<Spell>>((ref) {
   return [];
+});
+
+final availableSpellsProvider = StateProvider<List<Spell>>((ref) {
+  return [];
+});
+
+final skullAnimationProvider = StateProvider<AnimationController?>((ref) {
+  return null;
 });

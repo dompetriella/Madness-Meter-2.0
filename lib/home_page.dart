@@ -88,7 +88,6 @@ class MadnessPage extends HookConsumerWidget {
               child: MadnessMeter(),
             ),
             MadSkullWidget(),
-            TestSlider()
           ],
         )));
   }
@@ -164,8 +163,12 @@ class Login extends HookConsumerWidget {
                         textAlign: TextAlign.center,
                         onChanged: (value) async {
                           if (value.toLowerCase() == 'vessel') {
-                            Future.delayed(500.ms).then((value) =>
-                                ref.read(sessionIdProvider.notifier).state = 1);
+                            Future.delayed(500.ms).then((future) async {
+                              PlayerSession session =
+                                  await getSessionIdByName(value.toLowerCase());
+                              ref.read(sessionIdProvider.notifier).state =
+                                  session.id;
+                            });
                           }
                         },
                       ))),

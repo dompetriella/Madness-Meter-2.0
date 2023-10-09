@@ -8,9 +8,11 @@ part 'spell.g.dart';
 @freezed
 class Spell with _$Spell {
   const factory Spell({
-    required String spellName,
-    required String description,
-    required int spellType,
+    @JsonKey(name: 'created_at') required DateTime createdAt,
+    @JsonKey(name: 'spell_name') required String spellName,
+    @JsonKey(name: 'description') required String description,
+    @JsonKey(name: 'spell_type') required int spellType,
+    @JsonKey(name: 'available_campaigns') required List<int> availableCampaigns,
   }) = _Spell;
 
   factory Spell.fromJson(Map<String, Object?> json) => _$SpellFromJson(json);

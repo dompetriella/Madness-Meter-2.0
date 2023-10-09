@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:madness_meter_2/provider.dart';
 import 'package:madness_meter_2/utility.dart';
 
-class MadSkullWidget extends ConsumerWidget {
+class MadSkullWidget extends HookConsumerWidget {
   const MadSkullWidget({
     super.key,
   });
@@ -13,6 +14,15 @@ class MadSkullWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     double height = 150;
     double width = 150;
+
+    AnimationController animationController =
+        useAnimationController(duration: 200.ms);
+
+    ref.listen(madnessMeterValue, ((previous, next) {
+      if (previous != next) {
+        animationController.forward();
+      }
+    }));
 
     return Positioned(
       bottom: 0,
@@ -48,7 +58,10 @@ class MadSkullWidget extends ConsumerWidget {
           ),
         ),
       ),
-    );
+    )
+        .animate(controller: ref.read(skullAnimationProvider), autoPlay: false)
+        .blur()
+        .shakeX();
   }
 }
 
