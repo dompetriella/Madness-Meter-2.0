@@ -55,18 +55,15 @@ Future<List<Spell>> getAllSpells() async {
   return allSpells.map((e) => Spell.fromJson(e)).toList();
 }
 
-Future getAvailableSpellsInState(WidgetRef ref,
-    {bool overrideGet = false}) async {
-  PlayerSession session = await getSessionById(ref.read(sessionIdProvider));
-  if (!session.newSpellsAvailable && overrideGet == false) {
-    return ref.read(availableSpellsProvider);
-  }
+Future getAvailableSpellsInState(WidgetRef ref) async {
+  int id = ref.read(sessionIdProvider);
+
   List<Spell> allSpells = await getAllSpells();
   List<Spell> availableSpells = allSpells
-      .where((element) => element.availableCampaigns.contains(session.id))
+      .where((element) => element.availableCampaigns.contains(id))
       .toList();
   ref.read(availableSpellsProvider.notifier).state = availableSpells;
   await supabase.from('player_session').update({
     'new_spells_available': false,
-  }).eq('id', ref.read(sessionIdProvider));
+  }).eq('id', id);
 }
