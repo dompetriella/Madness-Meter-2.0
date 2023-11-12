@@ -231,11 +231,6 @@ class Login extends HookConsumerWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'ENTER',
-                  style: TextStyle(color: Colors.white, fontSize: 60),
-                ),
-                SizedBox(width: 30),
-                Text(
                   'YOUR',
                   style: TextStyle(color: Colors.white, fontSize: 60),
                 ),
@@ -243,7 +238,7 @@ class Login extends HookConsumerWidget {
                   width: 30,
                 ),
                 Text(
-                  'FATE',
+                  'FATE?',
                   style: TextStyle(color: Colors.red, fontSize: 60),
                 ),
               ].animate(interval: 800.ms).fadeIn().slideY(),
