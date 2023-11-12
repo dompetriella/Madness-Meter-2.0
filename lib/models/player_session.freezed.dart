@@ -29,8 +29,6 @@ mixin _$PlayerSession {
   int get madnessValue => throw _privateConstructorUsedError;
   @JsonKey(name: 'max_madness_value')
   int get maxMadnessValue => throw _privateConstructorUsedError;
-  @JsonKey(name: 'new_spells_available')
-  bool get newSpellsAvailable => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -49,8 +47,7 @@ abstract class $PlayerSessionCopyWith<$Res> {
       @JsonKey(name: 'created_at') DateTime createdAt,
       @JsonKey(name: 'campaign_name') String campaignName,
       @JsonKey(name: 'madness_value') int madnessValue,
-      @JsonKey(name: 'max_madness_value') int maxMadnessValue,
-      @JsonKey(name: 'new_spells_available') bool newSpellsAvailable});
+      @JsonKey(name: 'max_madness_value') int maxMadnessValue});
 }
 
 /// @nodoc
@@ -71,7 +68,6 @@ class _$PlayerSessionCopyWithImpl<$Res, $Val extends PlayerSession>
     Object? campaignName = null,
     Object? madnessValue = null,
     Object? maxMadnessValue = null,
-    Object? newSpellsAvailable = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -94,10 +90,6 @@ class _$PlayerSessionCopyWithImpl<$Res, $Val extends PlayerSession>
           ? _value.maxMadnessValue
           : maxMadnessValue // ignore: cast_nullable_to_non_nullable
               as int,
-      newSpellsAvailable: null == newSpellsAvailable
-          ? _value.newSpellsAvailable
-          : newSpellsAvailable // ignore: cast_nullable_to_non_nullable
-              as bool,
     ) as $Val);
   }
 }
@@ -115,8 +107,7 @@ abstract class _$$_PlayerSessionCopyWith<$Res>
       @JsonKey(name: 'created_at') DateTime createdAt,
       @JsonKey(name: 'campaign_name') String campaignName,
       @JsonKey(name: 'madness_value') int madnessValue,
-      @JsonKey(name: 'max_madness_value') int maxMadnessValue,
-      @JsonKey(name: 'new_spells_available') bool newSpellsAvailable});
+      @JsonKey(name: 'max_madness_value') int maxMadnessValue});
 }
 
 /// @nodoc
@@ -135,7 +126,6 @@ class __$$_PlayerSessionCopyWithImpl<$Res>
     Object? campaignName = null,
     Object? madnessValue = null,
     Object? maxMadnessValue = null,
-    Object? newSpellsAvailable = null,
   }) {
     return _then(_$_PlayerSession(
       id: null == id
@@ -158,10 +148,6 @@ class __$$_PlayerSessionCopyWithImpl<$Res>
           ? _value.maxMadnessValue
           : maxMadnessValue // ignore: cast_nullable_to_non_nullable
               as int,
-      newSpellsAvailable: null == newSpellsAvailable
-          ? _value.newSpellsAvailable
-          : newSpellsAvailable // ignore: cast_nullable_to_non_nullable
-              as bool,
     ));
   }
 }
@@ -174,8 +160,7 @@ class _$_PlayerSession with DiagnosticableTreeMixin implements _PlayerSession {
       @JsonKey(name: 'created_at') required this.createdAt,
       @JsonKey(name: 'campaign_name') required this.campaignName,
       @JsonKey(name: 'madness_value') required this.madnessValue,
-      @JsonKey(name: 'max_madness_value') required this.maxMadnessValue,
-      @JsonKey(name: 'new_spells_available') required this.newSpellsAvailable});
+      @JsonKey(name: 'max_madness_value') required this.maxMadnessValue});
 
   factory _$_PlayerSession.fromJson(Map<String, dynamic> json) =>
       _$$_PlayerSessionFromJson(json);
@@ -194,13 +179,10 @@ class _$_PlayerSession with DiagnosticableTreeMixin implements _PlayerSession {
   @override
   @JsonKey(name: 'max_madness_value')
   final int maxMadnessValue;
-  @override
-  @JsonKey(name: 'new_spells_available')
-  final bool newSpellsAvailable;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'PlayerSession(id: $id, createdAt: $createdAt, campaignName: $campaignName, madnessValue: $madnessValue, maxMadnessValue: $maxMadnessValue, newSpellsAvailable: $newSpellsAvailable)';
+    return 'PlayerSession(id: $id, createdAt: $createdAt, campaignName: $campaignName, madnessValue: $madnessValue, maxMadnessValue: $maxMadnessValue)';
   }
 
   @override
@@ -212,8 +194,7 @@ class _$_PlayerSession with DiagnosticableTreeMixin implements _PlayerSession {
       ..add(DiagnosticsProperty('createdAt', createdAt))
       ..add(DiagnosticsProperty('campaignName', campaignName))
       ..add(DiagnosticsProperty('madnessValue', madnessValue))
-      ..add(DiagnosticsProperty('maxMadnessValue', maxMadnessValue))
-      ..add(DiagnosticsProperty('newSpellsAvailable', newSpellsAvailable));
+      ..add(DiagnosticsProperty('maxMadnessValue', maxMadnessValue));
   }
 
   @override
@@ -229,15 +210,13 @@ class _$_PlayerSession with DiagnosticableTreeMixin implements _PlayerSession {
             (identical(other.madnessValue, madnessValue) ||
                 other.madnessValue == madnessValue) &&
             (identical(other.maxMadnessValue, maxMadnessValue) ||
-                other.maxMadnessValue == maxMadnessValue) &&
-            (identical(other.newSpellsAvailable, newSpellsAvailable) ||
-                other.newSpellsAvailable == newSpellsAvailable));
+                other.maxMadnessValue == maxMadnessValue));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, createdAt, campaignName,
-      madnessValue, maxMadnessValue, newSpellsAvailable);
+  int get hashCode => Object.hash(
+      runtimeType, id, createdAt, campaignName, madnessValue, maxMadnessValue);
 
   @JsonKey(ignore: true)
   @override
@@ -259,9 +238,8 @@ abstract class _PlayerSession implements PlayerSession {
       @JsonKey(name: 'created_at') required final DateTime createdAt,
       @JsonKey(name: 'campaign_name') required final String campaignName,
       @JsonKey(name: 'madness_value') required final int madnessValue,
-      @JsonKey(name: 'max_madness_value') required final int maxMadnessValue,
-      @JsonKey(name: 'new_spells_available')
-      required final bool newSpellsAvailable}) = _$_PlayerSession;
+      @JsonKey(name: 'max_madness_value')
+      required final int maxMadnessValue}) = _$_PlayerSession;
 
   factory _PlayerSession.fromJson(Map<String, dynamic> json) =
       _$_PlayerSession.fromJson;
@@ -280,9 +258,6 @@ abstract class _PlayerSession implements PlayerSession {
   @override
   @JsonKey(name: 'max_madness_value')
   int get maxMadnessValue;
-  @override
-  @JsonKey(name: 'new_spells_available')
-  bool get newSpellsAvailable;
   @override
   @JsonKey(ignore: true)
   _$$_PlayerSessionCopyWith<_$_PlayerSession> get copyWith =>

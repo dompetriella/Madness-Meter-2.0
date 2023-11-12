@@ -13,7 +13,6 @@ _$_PlayerSession _$$_PlayerSessionFromJson(Map<String, dynamic> json) =>
       campaignName: json['campaign_name'] as String,
       madnessValue: json['madness_value'] as int,
       maxMadnessValue: json['max_madness_value'] as int,
-      newSpellsAvailable: json['new_spells_available'] as bool,
     );
 
 Map<String, dynamic> _$$_PlayerSessionToJson(_$_PlayerSession instance) =>
@@ -23,5 +22,4 @@ Map<String, dynamic> _$$_PlayerSessionToJson(_$_PlayerSession instance) =>
       'campaign_name': instance.campaignName,
       'madness_value': instance.madnessValue,
       'max_madness_value': instance.maxMadnessValue,
-      'new_spells_available': instance.newSpellsAvailable,
     };

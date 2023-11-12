@@ -20,6 +20,7 @@ Spell _$SpellFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Spell {
+  int get id => throw _privateConstructorUsedError;
   @JsonKey(name: 'created_at')
   DateTime get createdAt => throw _privateConstructorUsedError;
   @JsonKey(name: 'spell_name')
@@ -42,7 +43,8 @@ abstract class $SpellCopyWith<$Res> {
       _$SpellCopyWithImpl<$Res, Spell>;
   @useResult
   $Res call(
-      {@JsonKey(name: 'created_at') DateTime createdAt,
+      {int id,
+      @JsonKey(name: 'created_at') DateTime createdAt,
       @JsonKey(name: 'spell_name') String spellName,
       @JsonKey(name: 'description') String description,
       @JsonKey(name: 'spell_type') int spellType,
@@ -62,6 +64,7 @@ class _$SpellCopyWithImpl<$Res, $Val extends Spell>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
     Object? createdAt = null,
     Object? spellName = null,
     Object? description = null,
@@ -69,6 +72,10 @@ class _$SpellCopyWithImpl<$Res, $Val extends Spell>
     Object? availableCampaigns = null,
   }) {
     return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
       createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -100,7 +107,8 @@ abstract class _$$_SpellCopyWith<$Res> implements $SpellCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {@JsonKey(name: 'created_at') DateTime createdAt,
+      {int id,
+      @JsonKey(name: 'created_at') DateTime createdAt,
       @JsonKey(name: 'spell_name') String spellName,
       @JsonKey(name: 'description') String description,
       @JsonKey(name: 'spell_type') int spellType,
@@ -116,6 +124,7 @@ class __$$_SpellCopyWithImpl<$Res> extends _$SpellCopyWithImpl<$Res, _$_Spell>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
     Object? createdAt = null,
     Object? spellName = null,
     Object? description = null,
@@ -123,6 +132,10 @@ class __$$_SpellCopyWithImpl<$Res> extends _$SpellCopyWithImpl<$Res, _$_Spell>
     Object? availableCampaigns = null,
   }) {
     return _then(_$_Spell(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
       createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -151,7 +164,8 @@ class __$$_SpellCopyWithImpl<$Res> extends _$SpellCopyWithImpl<$Res, _$_Spell>
 @JsonSerializable()
 class _$_Spell with DiagnosticableTreeMixin implements _Spell {
   const _$_Spell(
-      {@JsonKey(name: 'created_at') required this.createdAt,
+      {required this.id,
+      @JsonKey(name: 'created_at') required this.createdAt,
       @JsonKey(name: 'spell_name') required this.spellName,
       @JsonKey(name: 'description') required this.description,
       @JsonKey(name: 'spell_type') required this.spellType,
@@ -162,6 +176,8 @@ class _$_Spell with DiagnosticableTreeMixin implements _Spell {
   factory _$_Spell.fromJson(Map<String, dynamic> json) =>
       _$$_SpellFromJson(json);
 
+  @override
+  final int id;
   @override
   @JsonKey(name: 'created_at')
   final DateTime createdAt;
@@ -186,7 +202,7 @@ class _$_Spell with DiagnosticableTreeMixin implements _Spell {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Spell(createdAt: $createdAt, spellName: $spellName, description: $description, spellType: $spellType, availableCampaigns: $availableCampaigns)';
+    return 'Spell(id: $id, createdAt: $createdAt, spellName: $spellName, description: $description, spellType: $spellType, availableCampaigns: $availableCampaigns)';
   }
 
   @override
@@ -194,6 +210,7 @@ class _$_Spell with DiagnosticableTreeMixin implements _Spell {
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'Spell'))
+      ..add(DiagnosticsProperty('id', id))
       ..add(DiagnosticsProperty('createdAt', createdAt))
       ..add(DiagnosticsProperty('spellName', spellName))
       ..add(DiagnosticsProperty('description', description))
@@ -206,6 +223,7 @@ class _$_Spell with DiagnosticableTreeMixin implements _Spell {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_Spell &&
+            (identical(other.id, id) || other.id == id) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             (identical(other.spellName, spellName) ||
@@ -222,6 +240,7 @@ class _$_Spell with DiagnosticableTreeMixin implements _Spell {
   @override
   int get hashCode => Object.hash(
       runtimeType,
+      id,
       createdAt,
       spellName,
       description,
@@ -244,7 +263,8 @@ class _$_Spell with DiagnosticableTreeMixin implements _Spell {
 
 abstract class _Spell implements Spell {
   const factory _Spell(
-      {@JsonKey(name: 'created_at') required final DateTime createdAt,
+      {required final int id,
+      @JsonKey(name: 'created_at') required final DateTime createdAt,
       @JsonKey(name: 'spell_name') required final String spellName,
       @JsonKey(name: 'description') required final String description,
       @JsonKey(name: 'spell_type') required final int spellType,
@@ -253,6 +273,8 @@ abstract class _Spell implements Spell {
 
   factory _Spell.fromJson(Map<String, dynamic> json) = _$_Spell.fromJson;
 
+  @override
+  int get id;
   @override
   @JsonKey(name: 'created_at')
   DateTime get createdAt;

@@ -12,7 +12,6 @@ class PlayerSession with _$PlayerSession {
     @JsonKey(name: 'campaign_name') required String campaignName,
     @JsonKey(name: 'madness_value') required int madnessValue,
     @JsonKey(name: 'max_madness_value') required int maxMadnessValue,
-    @JsonKey(name: 'new_spells_available') required bool newSpellsAvailable,
   }) = _PlayerSession;
 
   factory PlayerSession.fromJson(Map<String, Object?> json) =>

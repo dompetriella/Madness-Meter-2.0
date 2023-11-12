@@ -8,6 +8,7 @@ part 'spell.g.dart';
 @freezed
 class Spell with _$Spell {
   const factory Spell({
+    required int id,
     @JsonKey(name: 'created_at') required DateTime createdAt,
     @JsonKey(name: 'spell_name') required String spellName,
     @JsonKey(name: 'description') required String description,
