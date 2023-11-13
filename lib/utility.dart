@@ -51,3 +51,31 @@ double madnessAsPercent(WidgetRef ref) {
   }
   return percent;
 }
+
+String giveMadnessStatus(int dieRoll) {
+  if (dieRoll == 1) {
+    return '1 / 4 Current Health';
+  } else if (dieRoll == 2) {
+    return '1 / 2 Current Health';
+  } else if (dieRoll == 3) {
+    conditions.shuffle();
+    return conditions.first;
+  } else {
+    return 'New Spell';
+  }
+}
+
+List<String> conditions = [
+  'Blinded',
+  'Deafened',
+  'Frightened',
+  'Incapacitated',
+  'Invisible',
+  'Paralyzed',
+  'Petrified',
+  'Poisoned',
+  'Prone',
+  'Stunned',
+  'Unconscious',
+  'Exhaustion'
+];

@@ -12,6 +12,14 @@ final madnessMeterValue = StateProvider<int>((ref) {
   return 0;
 });
 
+final changedMadnessMeterValue = StateProvider<int>((ref) {
+  return 0;
+});
+
+final madnessCondition = StateProvider<String>((ref) {
+  return '';
+});
+
 final maxMadnessValue = StateProvider<int>((ref) {
   return 100;
 });

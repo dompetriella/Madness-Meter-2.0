@@ -16,12 +16,18 @@ class MeterText extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    int maxMadness = ref.watch(maxMadnessValue);
+    int currentMadness = ref.watch(madnessMeterValue);
+
     return Padding(
       padding: EdgeInsets.only(top: topPadding),
       child: Align(
         alignment: Alignment.topCenter,
-        child: (ref.watch(madnessMeterValue) > 0)
-            ? Text('${ref.watch(madnessMeterValue).toStringAsFixed(0)} / ${ref.watch(maxMadnessValue)}',
+        child: (currentMadness > 0)
+            ? Text(
+                    currentMadness > maxMadness
+                        ? 'MADNESS'
+                        : '${ref.watch(madnessMeterValue).toStringAsFixed(0)} / ${ref.watch(maxMadnessValue)}',
                     style:
                         GoogleFonts.astloch(fontSize: 100, color: Colors.white))
                 .animate()

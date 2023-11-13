@@ -20,6 +20,8 @@ import 'utility.dart';
 double sideBarSize = 300;
 double topPadding = 16;
 
+AnimationController? changedNumberAnimation;
+
 class HomePage extends ConsumerWidget {
   const HomePage({super.key});
 
@@ -52,13 +54,27 @@ class MadnessPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    AnimationController changedValueAnimationController =
+        useAnimationController(duration: 1500.ms);
+
     final initFunction = useCallback((_) async {
       final stream = supabase
           .from('player_session')
           .stream(primaryKey: ["id"]).eq('id', ref.read(sessionIdProvider));
       stream.listen((data) {
         PlayerSession session = PlayerSession.fromJson(data.first);
+        int previousValue = ref.read(madnessMeterValue);
         ref.read(madnessMeterValue.notifier).state = session.madnessValue;
+        int change = session.madnessValue - previousValue;
+        ref.read(changedMadnessMeterValue.notifier).state = change;
+        if (change > 0) {
+          changedValueAnimationController.forward().then((value) =>
+              changedValueAnimationController.animateBack(0.0,
+                  duration: 1500.ms));
+          int dieRoll = Random().nextInt(4) + 1;
+          ref.read(madnessCondition.notifier).state =
+              giveMadnessStatus(dieRoll);
+        }
       });
     }, []);
 
@@ -66,10 +82,12 @@ class MadnessPage extends HookConsumerWidget {
       initFunction(null);
     }, []);
 
+    var currentMeter = ref.watch(madnessMeterValue);
+    var maxMeter = ref.watch(maxMadnessValue);
+
     return Scaffold(
         drawer: const SpellsDrawer(),
-        body: SafeArea(
-            child: Stack(
+        body: Stack(
           children: [
             Background(),
             ImageBackground(),
@@ -89,8 +107,60 @@ class MadnessPage extends HookConsumerWidget {
               child: MadnessMeter(),
             ),
             MadSkullWidget(),
+            Center(
+                child: currentMeter <= maxMeter
+                    ? ChangedMadnessValueText(
+                        changedValueAnimation: changedValueAnimationController,
+                      )
+                    : AnimatedBuilder(
+                        animation: changedValueAnimationController,
+                        builder: (context, child) {
+                          return Text(ref.watch(madnessCondition),
+                              style: TextStyle(
+                                  fontSize: 80,
+                                  color: Colors.white.withOpacity(
+                                      changedValueAnimationController.value),
+                                  fontWeight: FontWeight.w600));
+                        })),
+            Padding(
+              padding: const EdgeInsets.all(32.0),
+              child: Align(
+                alignment: Alignment.bottomRight,
+                child: Text(
+                  'Last Roll: ${currentMeter <= maxMeter ? ref.watch(changedMadnessMeterValue) : ref.watch(madnessCondition)}',
+                  style: TextStyle(
+                      letterSpacing: 3,
+                      fontSize: 18,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w200),
+                ),
+              ),
+            ),
           ],
-        )));
+        ));
+  }
+}
+
+class ChangedMadnessValueText extends HookConsumerWidget {
+  final AnimationController changedValueAnimation;
+  const ChangedMadnessValueText(
+      {super.key, required this.changedValueAnimation});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Center(
+        child: ref.watch(changedMadnessMeterValue) > 0
+            ? AnimatedBuilder(
+                animation: changedValueAnimation,
+                builder: (context, child) {
+                  return Text(ref.watch(changedMadnessMeterValue).toString(),
+                      style: GoogleFonts.astloch(
+                          fontSize: 140,
+                          color: Colors.white
+                              .withOpacity(changedValueAnimation.value),
+                          fontWeight: FontWeight.w600));
+                })
+            : SizedBox.shrink());
   }
 }
 
@@ -133,19 +203,19 @@ class Login extends HookConsumerWidget {
     final animation =
         CurvedAnimation(parent: animationController, curve: Curves.easeOutExpo);
 
-    Timer? _timer;
+    Timer? timer;
 
-    void _startTimer() {
-      _timer = Timer(Duration(seconds: 2), () {
+    void startTimer() {
+      timer = Timer(Duration(seconds: 2), () {
         if (isHeld.value) {
           isHeldLongEnough.value = true;
         }
       });
     }
 
-    void _cancelTimer() {
-      if (_timer != null && _timer!.isActive) {
-        _timer!.cancel();
+    void cancelTimer() {
+      if (timer != null && timer!.isActive) {
+        timer!.cancel();
       }
     }
 
@@ -164,12 +234,12 @@ class Login extends HookConsumerWidget {
               ? GestureDetector(
                   onPanDown: (details) async {
                     isHeld.value = true;
-                    _startTimer();
+                    startTimer();
                     animationController.forward();
                   },
                   onTapUp: (details) {
                     isHeld.value = false;
-                    _cancelTimer();
+                    cancelTimer();
                     animationController.reverse();
                   },
                   child: Container(
